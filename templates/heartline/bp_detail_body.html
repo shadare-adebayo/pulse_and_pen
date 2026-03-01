@@ -1,0 +1,13 @@
+<div>
+       <p>Recorded_date: {{entry.recorded_date}}</p> 
+       <p>Time_of_day: {{entry.time_of_day}}</p> 
+       <p>Systolic: {{entry.systolic}}</p> 
+       <p>Diastolic: {{entry.diastolic}}</p> 
+        {% if entry.pulse%}
+       <p>Pulse: {{entry.pulse}}</p> 
+        {% endif %}
+        {% if entry.note %}
+       <p>Note: {{entry.note}}</p> 
+        {% endif %}
+       <p>Created_at: {{entry.created_at}}</p> 
+</div>
