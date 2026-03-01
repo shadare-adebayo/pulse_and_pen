@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}All Entries{% endblock %}
+{% block content %}
+<div>
+    <ul>
+        {% for entry in entries %}
+        <li>
+            <a href=" {% url 'bp_detail' entry.pk %}">
+                {{entry.recorded_date|date:"F j, Y"}}-{{entry.systolic}}/{{entry.diastolic}}
+            </a>
+        </li>
+        {% empty %}
+        <li>No entries yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
