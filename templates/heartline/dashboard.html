@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ user.username }}!</p>
+<p>Total BP entries: {{ total_entries }} </p>
+
+<h3>Recent entries</h3>
+{% if recent_entries %}
+<ul>
+    {% for entry in recent_entries %}
+    <li>
+        <a href="{% url 'bp_detail' entry.pk %}">
+            {{ entry.recorded_date|date:"F j, Y" }}-{{ entry.systolic }}/{{ entry.diastolic }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p> You have no entries yet. <a href="{% url 'bp_create' %}">Add one now</a></p>
+{% endif %}
+{% endblock %}

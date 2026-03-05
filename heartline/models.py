@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 time_choices= [
@@ -7,6 +8,11 @@ time_choices= [
     ('evening', 'Evening')
 ]
 class BPEntry(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, 
+        related_name='bp_entries',
+    )
     recorded_date = models.DateField()
     time_of_day = models.CharField(max_length=20, choices= time_choices)
     systolic = models.IntegerField()
