@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %} Journal Details{% endblock %}
+{% block content %}
+{% include 'heartline/bp_journal_detail_body.html' %}
+<br>
+<p><a href="{% url 'bp_journal_update' entry.pk %}">Edit</a></p>
+<p><a href="{% url 'bp_journal_delete' entry.pk %}">Delete</a></p>
+<p><a href="{% url 'bp_journal_list' %}">Back</a></p>
+{% endblock %}

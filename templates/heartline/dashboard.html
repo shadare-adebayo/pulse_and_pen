@@ -4,6 +4,7 @@
 <h2>Dashboard</h2>
 <p>Welcome, {{ user.username }}!</p>
 <p>Total BP entries: {{ total_entries }} </p>
+<p>Total Journal entries: {{ total_journal_entries }} </p>
 
 <h3>Recent entries</h3>
 {% if recent_entries %}
@@ -18,5 +19,20 @@
 </ul>
 {% else %}
 <p> You have no entries yet. <a href="{% url 'bp_create' %}">Add one now</a></p>
+{% endif %}
+
+<h3>Recent Journals</h3>
+{% if recent_journal_entries %}
+<ul>
+    {% for entry in recent_journal_entries %}
+    <li>
+        <a href="{% url 'bp_journal_detail' entry.pk %}">
+            {{entry.recorded_date|date:"F j, Y" }}-{{entry.subject}}, feeling {{entry.mood}}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p> You have no entries yet. <a href="{% url 'bp_journal_create' %}">Add a new journal now</a></p>
 {% endif %}
 {% endblock %}

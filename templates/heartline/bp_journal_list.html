@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}My Journal{% endblock %}
+{% block content %}
+<h2>My Journal</h2>
+<div>
+    <ul>
+        {% for entry in entries %}
+        <li>
+            <a href="{% url 'bp_journal_detail' entry.pk %}"> 
+                {{entry.recorded_date|date:"F j, Y" }}-{{entry.subject}}, feeling {{entry.mood}}
+            </a>
+        </li>
+        {% empty %}
+        <li> No Entry </li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'bp_journal_create' %}">Add new journal</a></p>
+</div>
+{% endblock %}
