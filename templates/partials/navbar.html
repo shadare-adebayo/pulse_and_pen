@@ -3,6 +3,7 @@
         <h3><a href="{% url 'dashboard' %}">Dashboard</a></h3>
         <h3><a href="{% url 'bp_list' %}"> All Entries</a></h3>
         <h3><a href="{% url 'bp_create' %}"> Add Entry</a></h3>
+        <h3><a href="{% url 'bp_journal_list' %}"> My Journal</a></h3>
           
         
         
@@ -15,7 +16,7 @@
         </form>
     {% else %}
         <h3><a href="{% url 'login' %}"> Login </a></h3>
-        <h3><a href="{% url 'registration' %}">Register</a></h3>
+        <h3><a href="{% url 'register' %}">Register</a></h3>
     {% endif %}
 </nav>
 <hr>

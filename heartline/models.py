@@ -7,6 +7,14 @@ time_choices= [
     ('afternoon', 'Afternoon'),
     ('evening', 'Evening')
 ]
+
+mood_choices= [
+    ('super_good', 'Super Good'),
+    ('fine', 'Fine'),
+    ('tired', 'Tired'),
+    ('stressed', 'Stressed'),
+    ('sad', 'Sad')
+]
 class BPEntry(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -25,3 +33,17 @@ class BPEntry(models.Model):
         return f"{self.recorded_date}-{self.systolic}/{self.diastolic}"
 
 
+class BPJournal(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name= 'bp_journals',
+    )
+    recorded_date = models.DateField()
+    subject = models.CharField(max_length=200)
+    journal = models.TextField()
+    mood = models.CharField(max_length=20, choices=mood_choices)
+    created_at= models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.recorded_date}-{self.subject}- feeling {self.mood}"
