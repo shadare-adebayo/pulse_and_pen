@@ -35,4 +35,47 @@
 {% else %}
 <p> You have no entries yet. <a href="{% url 'bp_journal_create' %}">Add a new journal now</a></p>
 {% endif %}
+<hr>
+<h3>Blood Pressure Insight</h3>
+
+<h4>Last 7 days (averages)</h4>
+{% if avg_sys_7d or avg_dia_7d %}
+<p>Average systolic: {{ avg_sys_7d|floatformat:1 }}</p>
+<p>Average diastolic: {{ avg_dia_7d|floatformat:1 }}</p>
+{% else %}
+<p>No BP entries in the last 7 days</p>
+{% endif %}
+
+<h4>Last 30 days extremes</h4>
+{% if max_sys_30d or min_sys_30d %}
+<p>Highest systolic:{{ max_sys_30d }}</p>
+<p>Lowest systolic:{{ min_sys_3od }} </p>
+{% else %}
+<p>No BP entries in the last 30 days</p>
+{% endif %}
+
+<h4>Trend (latest vs previous)</h4>
+{% if latest_entry %}
+<p>
+    latest reading:
+     {{ latest_entry.recorded_date|date:"F j, Y" }}-{{ latest_entry.systolic }}/{{ latest_entry.diastolic }}
+</p>
+{% if previous_entry %}
+<p>
+    previous reading:
+     {{ previous_entry.recorded_date|date:"F j, Y" }}-{{ previous_entry.systolic }}/{{ previous_entry.diastolic }}
+</p>
+{% if systolic_change > 0 %}
+<p> Trend: systolic is up by{{ systolic_change }}. </p>
+{% elif systolic_change < 0 %}
+<p> Trend: systolic is down by{{ systolic_change }}. </p>
+{% else %}
+<p>Trend: systolic is about the same as last time.</p>
+{% endif %}
+{% else %}
+<p> Trend: not enough data yet (only one reading) </p>
+{% endif %}
+{% else %}
+<p> No BP reading yet. </p>
+{% endif %}
 {% endblock %}

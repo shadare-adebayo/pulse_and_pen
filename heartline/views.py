@@ -4,6 +4,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from .models import BPEntry, BPJournal
 from .forms import BPEntryForm, BPJournalForm
+from datetime import date, timedelta
+from django.db.models import Avg, Max, Min
 
 # Create your views here.
 
@@ -67,17 +69,56 @@ def registration(request):
 def dashboard(request):
     entries = BPEntry.objects.filter(user = request.user).order_by('-recorded_date')
     total_entries = entries.count()
-    recent_entries = entries[:5]
+    recent_entries = entries[:7]
 
     journal_entries = BPJournal.objects.filter(user = request.user).order_by('-recorded_date')
     total_journal_entries = journal_entries.count()
-    recent_journal_entries = journal_entries[:5]
+    recent_journal_entries = journal_entries[:7]
+
+    today= date.today()
+    seven_days_ago = today - timedelta(days=7)
+    thirty_days_ago = today -timedelta(days=30)
+
+    bp_last_7 = BPEntry.objects.filter(user = request.user,recorded_date__gte = seven_days_ago,)
+
+    bp_7_stats = bp_last_7.aggregate(
+        avg_sys_7d =Avg('systolic'),
+        avg_dia_7d = Avg('diastolic'),
+    )
+
+    avg_sys_7d = bp_7_stats['avg_sys_7d']
+    avg_dia_7d = bp_7_stats['avg_dia_7d']
+
+    bp_last_30= BPEntry.objects.filter( user = request.user, recorded_date__gte= thirty_days_ago,)
+
+    bp_30_stats = bp_last_30.aggregate(
+        max_sys_30d = Max('systolic'),
+        min_sys_30d = Min('systolic'),
+    )
+
+    max_sys_30d = bp_30_stats['max_sys_30d']
+    min_sys_30d = bp_30_stats['min_sys_30d']
+
+    bp_all = BPEntry.objects.filter(user = request.user).order_by('-recorded_date', '-created_at')
+    latest_entry = bp_all.first()
+    previous_entry = bp_all[1] if bp_all.count() > 1 else None
+
+    systolic_change = None
+    if latest_entry and previous_entry:
+        systolic_change = latest_entry.systolic - previous_entry.systolic
 
     context = {
         'total_entries': total_entries,
         'recent_entries': recent_entries,
         'total_journal_entries': total_journal_entries,
         'recent_journal_entries': recent_journal_entries,
+        'avg_sys_7d': avg_sys_7d,
+        'avg_dia_7d': avg_dia_7d,
+        'max_sys_30d': max_sys_30d,
+        'min_sys_30d': min_sys_30d,
+        'latest_entry': latest_entry,
+        'previous_entry': previous_entry,
+        'systolic_change': systolic_change,
     }
     return render(request, 'heartline/dashboard.html', context)
 
