@@ -6,6 +6,12 @@ from .views import(
     bp_journal_detail, bp_journal_create, bp_journal_delete,
     bp_journal_update,
 )
+from .api_views import(
+    BPEntryListCreateAPIView, BPEntryRetrieveUpdateDestroyAPIView,
+    BPJournalListCreateAPIView, BPJournalRetrieveUpdateDestroyAPIView,
+)
+
+
 urlpatterns= [
     path("", bp_list, name='bp_list' ),
     path('bp_detail/<int:pk>/', bp_detail, name= 'bp_detail'),
@@ -19,4 +25,8 @@ urlpatterns= [
     path("journal/add/", bp_journal_create, name='bp_journal_create'),
     path("journal/<int:pk>/edit/", bp_journal_update, name='bp_journal_update'),
     path('journal/<int:pk>/delete/', bp_journal_delete, name='bp_journal_delete'),
+    path('api/bp/', BPEntryListCreateAPIView.as_view(), name = 'api-bp-list-create'),
+    path('api/bp/<int:pk>/', BPEntryRetrieveUpdateDestroyAPIView.as_view(), name='api-bp-detail'),
+    path('api/journal/', BPJournalListCreateAPIView.as_view(), name = 'api-journal-list-create'),
+    path('api/journal/<int:pk>/', BPJournalRetrieveUpdateDestroyAPIView.as_view(), name = 'api-journal-details'),
 ]

@@ -12,7 +12,7 @@
     {% for entry in recent_entries %}
     <li>
         <a href="{% url 'bp_detail' entry.pk %}">
-            {{ entry.recorded_date|date:"F j, Y" }}-{{ entry.systolic }}/{{ entry.diastolic }}
+            {{ entry.recorded_date|date:"Y-m-d" }}-{{ entry.systolic }}/{{ entry.diastolic }}
         </a>
     </li>
     {% endfor %}
@@ -27,7 +27,7 @@
     {% for entry in recent_journal_entries %}
     <li>
         <a href="{% url 'bp_journal_detail' entry.pk %}">
-            {{entry.recorded_date|date:"F j, Y" }}-{{entry.subject}}, feeling {{entry.mood}}
+            {{entry.recorded_date|date:"Y-m-d" }}-{{entry.subject}}, feeling {{entry.mood}}
         </a>
     </li>
     {% endfor %}
@@ -58,12 +58,12 @@
 {% if latest_entry %}
 <p>
     latest reading:
-     {{ latest_entry.recorded_date|date:"F j, Y" }}-{{ latest_entry.systolic }}/{{ latest_entry.diastolic }}
+     {{ latest_entry.recorded_date|date:"Y-m-d" }}-{{ latest_entry.systolic }}/{{ latest_entry.diastolic }}
 </p>
 {% if previous_entry %}
 <p>
     previous reading:
-     {{ previous_entry.recorded_date|date:"F j, Y" }}-{{ previous_entry.systolic }}/{{ previous_entry.diastolic }}
+     {{ previous_entry.recorded_date|date:"Y-m-d" }}-{{ previous_entry.systolic }}/{{ previous_entry.diastolic }}
 </p>
 {% if systolic_change > 0 %}
 <p> Trend: systolic is up by{{ systolic_change }}. </p>
