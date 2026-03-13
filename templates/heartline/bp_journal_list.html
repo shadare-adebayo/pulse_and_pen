@@ -7,7 +7,7 @@
         {% for entry in entries %}
         <li>
             <a href="{% url 'bp_journal_detail' entry.pk %}"> 
-                {{entry.recorded_date|date:"F j, Y" }}-{{entry.subject}}, feeling {{entry.mood}}
+                {{entry.recorded_date|date:"Y-m-d" }}-{{entry.subject}}, feeling {{entry.mood}}
             </a>
         </li>
         {% empty %}
