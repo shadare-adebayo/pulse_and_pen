@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError 
 
 # Create your models here.
 time_choices= [
@@ -23,14 +25,28 @@ class BPEntry(models.Model):
     )
     recorded_date = models.DateField()
     time_of_day = models.CharField(max_length=20, choices= time_choices)
-    systolic = models.IntegerField()
-    diastolic = models.IntegerField()
+    systolic = models.IntegerField(
+        validators=[MinValueValidator(70), MaxValueValidator(250)]
+    )
+    diastolic = models.IntegerField(
+        validators=[MinValueValidator(40), MaxValueValidator(150)]
+    )
     pulse = models.IntegerField(null=True, blank= True)
     note = models.TextField(null=True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.recorded_date}-{self.systolic}/{self.diastolic}"
+    
+    def clean(self):
+        super().clean()
+        if self.systolic is not None and self.diastolic is not None:
+            if self.systolic <= self.diastolic:
+                raise ValidationError("Systolic must be greater than diastolic")
+    
+    def save(self,*args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class BPJournal(models.Model):
